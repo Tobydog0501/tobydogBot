@@ -1,0 +1,25 @@
+{
+  "name": "thunderofdawn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tobydog0501/Thunder-of-Dawn.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tobydog0501/Thunder-of-Dawn/issues"
+  },
+  "homepage": "https://github.com/Tobydog0501/Thunder-of-Dawn#readme",
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security",
+    "puppeteer": "^19.7.4"
+  }
+}

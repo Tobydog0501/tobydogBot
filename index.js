@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = "./token.json"
 const fsPromise = require('fs/promises')
 const TOKEN = fs.existsSync(path)?require(path).tkn:process.env.tkn
+const prompt = require('prompt-sync')({sigint: true});
 
 
 const bot = new Client({
@@ -21,9 +22,12 @@ bot.commands = new Discord.Collection();
 bot.events = new Discord.Collection();
 bot.buttons = new Discord.Collection();
 bot.modals = new Discord.Collection();
+bot.AI = new Discord.Collection();
 ['command_handler','event_handler'].forEach(handler=>{
   require(`./handlers/${handler}`)(bot,Discord);
 })
 
-if(true)  //for testing bot
-  bot.login(TOKEN);
+const type = prompt('Which bot you want to use?\n');
+
+if(true && TOKEN[type])  //for testing bot
+  bot.login(TOKEN[type]);

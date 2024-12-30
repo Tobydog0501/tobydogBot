@@ -42,6 +42,7 @@ RUN apt-get update && \
         libxtst6 \
         lsb-release \
         xdg-utils \
+        binfmt-support qemu qemu-user-static\
     && rm -rf /var/lib/apt/lists/*
 
 # Download and install GeckoDriver

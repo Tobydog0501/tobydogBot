@@ -1,4 +1,4 @@
-FROM node:latest
+FROM --platform=arm64 node:20
 
 ENV GECKODRIVER_VERSION=v0.35.0
 

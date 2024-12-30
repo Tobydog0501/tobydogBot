@@ -62,7 +62,7 @@ RUN npm update -g && \
     npm install
 
 # Copy driver scripts or binaries
-# COPY ./driver /bin/
+COPY ./driver /bin/
 
 # Define the default command to run your application
 CMD [ "node", "index.js" ]

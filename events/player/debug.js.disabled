@@ -1,0 +1,3 @@
+module.exports = async (queue, message) => {
+    console.log(`Player debug event: ${message}`);
+}

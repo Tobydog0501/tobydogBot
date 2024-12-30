@@ -1,0 +1,11 @@
+# version: '3.3'
+
+services:
+  discord-bot:
+    build: .
+    container_name: discord-bot
+    env_file:
+      - .env
+    restart: always
+    cpus: 1.2
+    mem_limit: 2G

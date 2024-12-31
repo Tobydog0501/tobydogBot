@@ -2,9 +2,9 @@ const { Client, GatewayIntentBits ,ModalBuilder } = require('discord.js');
 const Discord = require('discord.js');
 const { Player } = require('discord-player');
 const { YoutubeiExtractor } = require("discord-player-youtubei")
-const { DefaultExtractors } = require('@discord-player/extractor');
-const fs = require('fs');
-const fsPromise = require('fs/promises')
+// const { DefaultExtractors } = require('@discord-player/extractor');
+// const fs = require('fs');
+// const fsPromise = require('fs/promises')
 const TOKEN = process.env.TOKEN
 
 

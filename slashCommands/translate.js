@@ -1,6 +1,5 @@
 const { ContextMenuCommandBuilder, ApplicationCommandType } = require('discord.js');
-const { Builder, By, Key, until } = require('selenium-webdriver');
-const firefox = require('selenium-webdriver/firefox');
+const axios = require("axios");
 
 module.exports = {
   data: new ContextMenuCommandBuilder()
@@ -71,73 +70,18 @@ module.exports = {
 };
 
 /**
- * Delay execution for a specified number of milliseconds.
- * @param {number} ms - Milliseconds to wait.
- * @returns {Promise<void>}
- */
-async function wait(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
-
-/**
  * Translates the given message using the Zhuyin Decode tool.
  * @param {string} msg - The message to translate.
  * @returns {Promise<string>}
  */
 async function translate(msg) {
-    // Set Firefox options for headless browsing
-    let options = new firefox.Options();
-    options.addArguments("--headless");
-    // options.headless(); // Correct usage in Selenium 4.x
-  
-    // Initialize the Firefox driver
-    let driver = await new Builder()
-      .forBrowser('firefox')
-      .setFirefoxOptions(options)
-      .build();
-  
-    try {
-      // Navigate to the translation website
-      await driver.get('https://www.toolskk.com/zhuyin-decode');
-  
-      // Locate the input field and enter the message
-      const inputField = await driver.findElement(By.id('decode-input'));
-      await inputField.sendKeys(msg);
-  
-      // Submit the form by pressing Enter
-      await inputField.sendKeys(Key.RETURN);
-  
-      // Wait until the output field is located and visible
-      const outputField = await driver.wait(
-        until.elementLocated(By.id('decode-output')),
-        10000,
-        'Output field was not located within 10 seconds.'
-      );
-  
-      await driver.wait(
-        until.elementIsVisible(outputField),
-        10000,
-        'Output field is not visible.'
-      );
-  
-      // Wait until the output field has a non-empty value
-      await driver.wait(async () => {
-        const value = await outputField.getAttribute('value');
-        return value && value.trim().length > 0;
-      }, 10000, 'Output field did not receive a value within 10 seconds.');
-  
-      // Retrieve the translated text from the output field
-      const translatedText = await outputField.getAttribute('value');
-  
-      return translatedText;
-    } catch (error) {
-      console.error('An error occurred during translation:', error);
-      throw new Error('Failed to translate the message.');
-    } finally {
-      // Always quit the driver to free resources
-      await driver.quit();
-    }
+  try {
+    const response = await axios.get(`https://inputtools.google.com/request?text=${encodeURI(msg).replace("%20","%3D")}&itc=zh-hant-t-i0-und&ie=utf-8&oe=utf-8&app=demopage`);
+    const data = response.data;
+    // console.log(data);
+    return new Promise(res=>res(data[1][0][1][0]))
+  } catch (error) {
+    console.log(error);
   }
+
+};

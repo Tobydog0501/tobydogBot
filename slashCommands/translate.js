@@ -76,7 +76,7 @@ module.exports = {
  */
 async function translate(msg) {
   try {
-    const response = await axios.get(`https://inputtools.google.com/request?text=${encodeURI(msg).replace("%20","%3D")}&itc=zh-hant-t-i0-und&ie=utf-8&oe=utf-8&app=demopage`);
+    const response = await axios.get(`https://inputtools.google.com/request?text=${encodeURIComponent(msg).replace("%20","%3D")}&itc=zh-hant-t-i0-und&ie=utf-8&oe=utf-8&app=demopage`);
     const data = response.data;
     // console.log(data);
     return new Promise(res=>res(data[1][0][1][0]))

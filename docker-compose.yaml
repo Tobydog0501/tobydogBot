@@ -3,7 +3,6 @@
 services:
   discord-bot:
     build: .
-    image: tobydog/discordbot:v1
     container_name: discord-bot
     env_file:
       - .env

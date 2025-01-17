@@ -8,59 +8,12 @@ module.exports = {
   async execute(inter) {
     await inter.deferReply();
     const mesg = await inter.channel.messages.fetch(inter.targetId);
-    const splits = ["3", "4", "6", "7", " "];
-    const letters = "1qaz2wsxedcrfv5tgbyhnujm8ik,9ol.0p;/-";
-    let check = 0;
     await inter.editReply({ content: "正在轉換訊息..." });
-
-    /**
-     * @type {string}
-     */
-    let msg = mesg.content;
-    for (let s of splits) {
-      if (msg.endsWith(s))
-        check = 1;
-    }
-    if (check === 0) {
-      msg += " ";
-    }
-
-    let count = 0;
-    for (let i = 0; i < msg.length; i++) {
-      count += 1;
-      if (splits.includes(msg[i])) {
-        switch (count) {
-          case 1:
-            // sus
-            throw new Error(`SUSSY BAKA AT ${i}\n Total msg length:${msg.length}`);
-          case 2:
-            // normal
-            break;
-          case 3:
-            if (letters.indexOf(msg[i - 1]) < letters.indexOf(msg[i - 2])) {
-              msg = msg.slice(0, i - 2) + msg[i - 1] + msg[i - 2] + msg.slice(i);
-            }
-            break;
-          case 4:
-            if (letters.indexOf(msg[i - 2]) < letters.indexOf(msg[i - 3])) {
-              msg = msg.slice(0, i - 2) + msg[i - 1] + msg[i - 2] + msg.slice(i);
-            }
-            if (letters.indexOf(msg[i - 1]) < letters.indexOf(msg[i - 3])) {
-              msg = msg.slice(0, i - 3) + msg[i - 1] + msg[i - 2] + msg[i - 3] + msg.slice(i);
-            }
-            if (letters.indexOf(msg[i - 1]) < letters.indexOf(msg[i - 2])) {
-              msg = msg.slice(0, i - 2) + msg[i - 1] + msg[i - 2] + msg.slice(i);
-            }
-            break;
-        }
-        count = 0;
-      }
-    }
-
+    const resa = await reassemble(mesg.content);
     await inter.editReply({ content: "正在戳神奇網站..." });
 
     try {
-      const ret = await translate(msg);
+      const ret = await translate(resa);
       await inter.editReply({ content: ret });
     } catch (error) {
       console.error(error);
@@ -75,13 +28,64 @@ module.exports = {
  * @returns {Promise<string>}
  */
 async function translate(msg) {
+  const payload = msg.replace(/\ /g,"=").replace(/,/g,"%2C");
+  // console.log(encodeURIComponent(payload))
   try {
-    const response = await axios.get(`https://inputtools.google.com/request?text=${encodeURIComponent(msg).replace("%20","%3D")}&itc=zh-hant-t-i0-und&ie=utf-8&oe=utf-8&app=demopage`);
-    const data = response.data;
-    // console.log(data);
-    return new Promise(res=>res(data[1][0][1][0]))
+      const response = await axios.get(`https://inputtools.google.com/request?text=${encodeURIComponent(payload)}&itc=zh-hant-t-i0-und&ie=utf-8&oe=utf-8&app=demopage`);
+      const data = response.data;
+      // console.log(data);
+      return new Promise(res=>res(data[1][0][1][0]))
   } catch (error) {
-    console.log(error);
+      console.log(error);
   }
 
 };
+
+async function reassemble(inp) {
+  var msg = inp
+  const splits = ["3", "4", "6", "7", " "];
+  const letters = "1qaz2wsxedcrfv5tgbyhnujm8ik,9ol.0p;/-";
+  let check = 0;
+  
+  for (let s of splits) {
+      if (msg.endsWith(s))
+      check = 1;
+  }
+  if (check === 0) {
+      msg += " ";
+  }
+
+  let count = 0;
+  for (let i = 0; i < msg.length; i++) {
+      count += 1;
+      if (splits.includes(msg[i])) {
+      switch (count) {
+          case 1:
+          // sus
+          throw new Error(`SUSSY BAKA AT ${i}\n Total msg length:${msg.length}`);
+          case 2:
+          // normal
+          break;
+          case 3:
+          if (letters.indexOf(msg[i - 1]) < letters.indexOf(msg[i - 2])) {
+              msg = msg.slice(0, i - 2) + msg[i - 1] + msg[i - 2] + msg.slice(i);
+          }
+          break;
+          case 4:
+          if (letters.indexOf(msg[i - 2]) < letters.indexOf(msg[i - 3])) {
+              msg = msg.slice(0, i - 2) + msg[i - 1] + msg[i - 2] + msg.slice(i);
+          }
+          if (letters.indexOf(msg[i - 1]) < letters.indexOf(msg[i - 3])) {
+              msg = msg.slice(0, i - 3) + msg[i - 1] + msg[i - 2] + msg[i - 3] + msg.slice(i);
+          }
+          if (letters.indexOf(msg[i - 1]) < letters.indexOf(msg[i - 2])) {
+              msg = msg.slice(0, i - 2) + msg[i - 1] + msg[i - 2] + msg.slice(i);
+          }
+          break;
+      }
+      count = 0;
+      }
+  }
+  return new Promise(res=>res(msg));
+  
+}

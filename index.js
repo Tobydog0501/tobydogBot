@@ -32,8 +32,12 @@ bot.modals = new Discord.Collection();
 // this is the entrypoint for discord-player based application
 const player = new Player(bot);
 
-// import { DefaultExtractors } from '@discord-player/ex
-player.extractors.register(YoutubeiExtractor, {})
+const oauthTokens = getOauthTokens() // The tokens printed from step above
+
+player.extractors.register(YoutubeiExtractor, {
+    authentication: oauthTokens
+})
+// player.extractors.register(YoutubeiExtractor, {})
 // console.log(player)
 require("./handlers/player_handler")(player,Discord);
 // if(true)  //for testing bot

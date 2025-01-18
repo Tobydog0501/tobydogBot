@@ -8,9 +8,9 @@ var commands2 = [];
 
 // Place your client and guild ids here
 const clientId = process.env.CID;
-const guildId = process.env.GID;
 
 module.exports = async (msg,reset)=>{
+  const guildId = msg.guild.id;
   const SlashcommandFiles = fs.readdirSync('./slashCommands').filter(file => file.endsWith('.js'));
   const rest = new REST({ version: '9' }).setToken(TOKEN);
   var err = true;

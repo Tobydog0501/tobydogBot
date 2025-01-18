@@ -32,7 +32,7 @@ bot.modals = new Discord.Collection();
 // this is the entrypoint for discord-player based application
 const player = new Player(bot);
 
-const oauthTokens = getOauthTokens() // The tokens printed from step above
+const oauthTokens = process.env.ACCESS
 
 player.extractors.register(YoutubeiExtractor, {
     authentication: oauthTokens

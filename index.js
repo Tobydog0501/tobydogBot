@@ -1,7 +1,7 @@
 const { Client, GatewayIntentBits ,ModalBuilder } = require('discord.js');
 const Discord = require('discord.js');
 const { Player } = require('discord-player');
-const { YoutubeiExtractor } = require("discord-player-youtubei")
+const { YoutubeiExtractor,generateOauthTokens } = require("discord-player-youtubei")
 // const { DefaultExtractors } = require('@discord-player/extractor');
 // const fs = require('fs');
 // const fsPromise = require('fs/promises')
@@ -33,7 +33,7 @@ bot.modals = new Discord.Collection();
 const player = new Player(bot);
 
 const oauthTokens = process.env.ACCESS
-
+generateOauthTokens().then(res=>console.log(res))
 player.extractors.register(YoutubeiExtractor, {
     authentication: oauthTokens
 })
